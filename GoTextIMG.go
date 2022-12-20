@@ -36,6 +36,8 @@ func createImageExpiremental(text string) {
 	
 	img := image.NewRGBA(image.Rect(0, 0, dim, dim))
 	
+	flip := false
+	
 	//rows
 	for i := 0; i < dim; i++ {
 		//columns
@@ -54,8 +56,17 @@ func createImageExpiremental(text string) {
 			}
 			
 			cl := color.NRGBA{R: r, G: g, B: b, A: 255}
-			img.Set(i, j, cl)
+			
+			if flip {
+				r := int(math.Abs(float64(j - dim)))
+				img.Set(i, r, cl)
+			} else {
+				img.Set(i, j, cl)
+			}
+			
 		}
+		
+		flip = !flip
 	}
 	
 	out, err := os.Create("Text.png")
